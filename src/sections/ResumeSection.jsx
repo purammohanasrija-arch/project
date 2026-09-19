@@ -164,9 +164,7 @@ export default function ResumeSection() {
               </a>
             </div>
 
-            <p className="text-xs text-slate-600 italic">
-              📌 Add your resume PDF to <code className="text-slate-500 font-mono">public/resume/Mohana-Srija-Puram-Resume.pdf</code> to enable download.
-            </p>
+
           </motion.div>
         </div>
       </div>

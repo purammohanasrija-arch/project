@@ -295,13 +295,10 @@ export default function Contact() {
                 >
                   <CheckCircle size={15} aria-hidden="true" />
                   <span>Message submitted! I'll get back to you soon.</span>
-                  <span className="block text-xs text-green-500 mt-0.5">(Note: Connect a service like Formspree/EmailJS to enable real delivery.)</span>
                 </motion.div>
               )}
 
-              <p className="text-xs text-slate-600">
-                To enable real email delivery, connect Formspree or EmailJS and update the form action.
-              </p>
+
             </form>
           </motion.div>
         </div>

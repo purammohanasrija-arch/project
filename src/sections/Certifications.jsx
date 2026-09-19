@@ -62,23 +62,7 @@ export default function Certifications() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Note */}
-        <motion.div
-          className="mt-10 rounded-2xl p-4 text-center"
-          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)' }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          <p className="text-sm text-amber-400/80">
-            <span className="font-semibold text-amber-400">📌 Note:</span>{' '}
-            Add certificate PDFs to{' '}
-            <code className="font-mono bg-white/5 px-1.5 py-0.5 rounded text-amber-300 text-xs">public/certificates/</code>
-            {' '}and update paths in{' '}
-            <code className="font-mono bg-white/5 px-1.5 py-0.5 rounded text-amber-300 text-xs">src/data/portfolioData.js</code>
-            {' '}to enable "View" buttons.
-          </p>
-        </motion.div>
+
       </div>
     </section>
   );
@@ -208,7 +192,7 @@ function CertCard3D({ cert, index }) {
                 View
               </a>
             ) : (
-              <span className="text-xs text-slate-700 italic">Add PDF</span>
+              <span className="text-xs text-slate-700 italic"></span>
             )}
           </div>
         </div>
