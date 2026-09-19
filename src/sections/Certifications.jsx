@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Award, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
+import { Award, ChevronLeft, ChevronRight, CheckCircle, ExternalLink } from 'lucide-react';
 import { certifications } from '../data/portfolioData';
 
 const categoryIcons = { Cisco: '🌐', NPTEL: '🎓', Unstop: '⚡', Tata: '💼', Internship: '🏢' };
@@ -189,7 +189,27 @@ function CertCard3D({ cert, index }) {
               <Award size={11} aria-hidden="true" />
               Certificate
             </div>
-            <span className="text-xs text-slate-700 italic">PDF coming soon</span>
+            {cert.file ? (
+              <a
+                href={cert.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                style={{
+                  background: `${color}10`,
+                  border: `1px solid ${color}30`,
+                  color,
+                }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 10px ${color}30`; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
+                aria-label={`View ${cert.title} certificate`}
+              >
+                <ExternalLink size={10} aria-hidden="true" />
+                View
+              </a>
+            ) : (
+              <span className="text-xs text-slate-700 italic">Add PDF</span>
+            )}
           </div>
         </div>
       </motion.div>
