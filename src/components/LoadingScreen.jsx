@@ -97,7 +97,7 @@ export default function LoadingScreen({ onComplete }) {
                   fontFamily: 'Inter, sans-serif',
                 }}
               >
-                MSP
+                MP
               </span>
             </div>
           </motion.div>
@@ -110,7 +110,7 @@ export default function LoadingScreen({ onComplete }) {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 tracking-wide">
-              Mohana Srija Puram
+              Mohana P
             </h1>
             <p className="text-sm md:text-base text-slate-400 font-mono tracking-widest">
               Turning Ideas into Real‑World Solutions

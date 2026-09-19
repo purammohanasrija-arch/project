@@ -1,10 +1,14 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import ErrorBoundary from './components/ErrorBoundary';
 import ParticleBackground from './components/ParticleBackground';
 import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
 import RecruiterMode from './components/RecruiterMode';
+import CursorGlow from './components/CursorGlow';
+import ScrollProgress from './components/ScrollProgress';
+import SectionReveal from './components/SectionReveal';
 
 import Hero from './sections/Hero';
 import QuickStats from './sections/QuickStats';
@@ -24,11 +28,9 @@ export default function App() {
   const handleLoadComplete = useCallback(() => setLoaded(true), []);
 
   return (
-    <>
-      {/* Loading screen */}
+    <ErrorBoundary>
       <LoadingScreen onComplete={handleLoadComplete} />
 
-      {/* Main app */}
       <AnimatePresence>
         {loaded && (
           <motion.div
@@ -36,47 +38,79 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
+            style={{ position: 'relative', minHeight: '100vh' }}
           >
-            {/* Star/particle background */}
+            {/* Global effects */}
+            <CursorGlow />
+            <ScrollProgress />
             <ParticleBackground />
 
             {/* Background gradient overlays */}
             <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
               <div
-                className="absolute top-0 left-0 w-[600px] h-[600px] rounded-full opacity-10"
-                style={{ background: 'radial-gradient(circle, rgba(0,212,255,0.5), transparent 60%)', filter: 'blur(100px)' }}
+                className="absolute top-0 left-0 w-[600px] h-[600px] rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(0,212,255,0.12), transparent 60%)',
+                  filter: 'blur(100px)', opacity: 0.6,
+                }}
               />
               <div
-                className="absolute bottom-1/3 right-0 w-[500px] h-[500px] rounded-full opacity-8"
-                style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.5), transparent 60%)', filter: 'blur(100px)' }}
+                className="absolute bottom-1/3 right-0 w-[500px] h-[500px] rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(124,58,237,0.12), transparent 60%)',
+                  filter: 'blur(100px)', opacity: 0.5,
+                }}
               />
             </div>
 
             {/* Navigation */}
             <Navbar onRecruiterMode={() => setRecruiterOpen(true)} />
 
-            {/* Main content */}
-            <main id="main-content">
+            {/* Main content — each section gets a blur-reveal entrance */}
+            <main id="main-content" style={{ position: 'relative', zIndex: 1 }}>
+              {/* Hero has its own entrance animations */}
               <Hero />
-              <QuickStats />
-              <JourneyExplorer />
-              <Projects />
-              <Skills />
-              <ExperienceTimeline />
-              <Certifications />
-              <ResumeSection />
-              <Contact />
+
+              <SectionReveal delay={0}>
+                <QuickStats />
+              </SectionReveal>
+
+              <SectionReveal delay={0.05}>
+                <JourneyExplorer />
+              </SectionReveal>
+
+              <SectionReveal delay={0.05}>
+                <Projects />
+              </SectionReveal>
+
+              <SectionReveal delay={0.05}>
+                <Skills />
+              </SectionReveal>
+
+              <SectionReveal delay={0.05}>
+                <ExperienceTimeline />
+              </SectionReveal>
+
+              <SectionReveal delay={0.05}>
+                <Certifications />
+              </SectionReveal>
+
+              <SectionReveal delay={0.05}>
+                <ResumeSection />
+              </SectionReveal>
+
+              <SectionReveal delay={0.05}>
+                <Contact />
+              </SectionReveal>
             </main>
 
             <Footer />
 
-            {/* Recruiter Mode modal */}
             <RecruiterMode
               isOpen={recruiterOpen}
               onClose={() => setRecruiterOpen(false)}
             />
 
-            {/* Skip to main content link for accessibility */}
             <a
               href="#main-content"
               className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-cyan-400 focus:text-black focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold"
@@ -86,6 +120,6 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </ErrorBoundary>
   );
 }

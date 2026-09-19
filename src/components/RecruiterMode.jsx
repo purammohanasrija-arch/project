@@ -80,8 +80,26 @@ export default function RecruiterMode({ isOpen, onClose }) {
                   {/* Profile */}
                   <RecruiterCard title="Profile" icon={GraduationCap} color="#00d4ff">
                     <div className="space-y-2">
-                      <div className="text-base font-bold text-white">{personal.name}</div>
-                      <div className="text-sm text-slate-400">{personal.title}</div>
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0"
+                          style={{ border: '2px solid rgba(0,212,255,0.4)', boxShadow: '0 0 15px rgba(0,212,255,0.2)' }}>
+                          <img src="/assets/images/my-photo.jpeg" alt={personal.name}
+                            className="w-full h-full object-cover object-[center_15%]"
+                            onError={e => {
+                              e.target.style.display = 'none';
+                              e.target.parentElement.style.cssText += ';background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(124,58,237,0.2));display:flex;align-items:center;justify-content:center;';
+                              const s = document.createElement('span');
+                              s.textContent = 'MP';
+                              s.style.cssText = 'font-size:14px;font-weight:900;color:#00d4ff;';
+                              e.target.parentElement.appendChild(s);
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <div className="text-base font-bold text-white">{personal.name}</div>
+                          <div className="text-sm text-slate-400">{personal.title}</div>
+                        </div>
+                      </div>
                       <div className="text-sm text-slate-400">📍 {personal.location}</div>
                       <div className="text-sm text-slate-400">🎓 Vignan's University · CGPA 8.15/10</div>
                       <div className="text-sm text-slate-400">📅 2024–2028 (Expected)</div>

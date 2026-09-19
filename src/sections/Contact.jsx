@@ -74,7 +74,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="section-padding relative z-10"
+      className="section-padding relative z-10 scanline"
       aria-labelledby="contact-heading"
     >
       <div className="max-w-5xl mx-auto">

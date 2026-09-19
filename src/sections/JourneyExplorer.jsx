@@ -10,7 +10,6 @@ const categories = [
     color: '#06b6d4',
     glow: 'rgba(6,182,212,0.4)',
     desc: 'Real-world apps & visualizers',
-    face: 'front',
   },
   {
     id: 'experience',
@@ -19,7 +18,6 @@ const categories = [
     color: '#7c3aed',
     glow: 'rgba(124,58,237,0.4)',
     desc: 'Internships & timeline',
-    face: 'right',
   },
   {
     id: 'skills',
@@ -28,7 +26,6 @@ const categories = [
     color: '#00d4ff',
     glow: 'rgba(0,212,255,0.4)',
     desc: 'Tech stack & expertise',
-    face: 'top',
   },
   {
     id: 'certifications',
@@ -37,17 +34,14 @@ const categories = [
     color: '#ec4899',
     glow: 'rgba(236,72,153,0.4)',
     desc: 'Verified achievements',
-    face: 'bottom',
   },
 ];
 
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
+
 export default function JourneyExplorer() {
-  const [hovered, setHovered] = useState(null);
-
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section
       id="journey"
@@ -64,15 +58,15 @@ export default function JourneyExplorer() {
           transition={{ duration: 0.6 }}
         >
           <h2 id="journey-heading" className="section-title">Explore My Journey</h2>
-          <p className="section-subtitle mt-2">Drag to explore · Click to navigate</p>
+          <p className="section-subtitle mt-2">Click a section to navigate</p>
         </motion.div>
 
-        {/* Desktop: 3D Cube concept */}
-        <div className="hidden md:flex justify-center">
-          <CubeVisual categories={categories} scrollTo={scrollTo} />
+        {/* Desktop layout */}
+        <div className="hidden md:block">
+          <DesktopGrid />
         </div>
 
-        {/* Mobile: Cards */}
+        {/* Mobile: 2x2 cards */}
         <div className="grid grid-cols-2 gap-4 md:hidden">
           {categories.map((cat, i) => {
             const Icon = cat.icon;
@@ -84,7 +78,6 @@ export default function JourneyExplorer() {
                 style={{
                   background: `linear-gradient(135deg, ${cat.color}10, ${cat.color}05)`,
                   border: `1px solid ${cat.color}30`,
-                  focusVisibleRingColor: cat.color,
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.boxShadow = `0 0 30px ${cat.glow}`;
@@ -122,33 +115,23 @@ export default function JourneyExplorer() {
   );
 }
 
-function CubeVisual({ categories, scrollTo }) {
-  const [rotateX, setRotateX] = useState(-15);
-  const [rotateY, setRotateY] = useState(30);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-  const [autoRotate, setAutoRotate] = useState(true);
+function DesktopGrid() {
+  const [hovered, setHovered] = useState(null);
 
-  // Auto rotation effect via inline animation
+  const positions = [
+    { top: '10%', left: '5%' },
+    { top: '10%', right: '5%' },
+    { bottom: '10%', left: '5%' },
+    { bottom: '10%', right: '5%' },
+  ];
+
   return (
     <div
-      className="relative"
-      style={{ width: 480, height: 460 }}
-      onMouseEnter={() => setAutoRotate(false)}
-      onMouseLeave={() => { setAutoRotate(true); setIsDragging(false); }}
-      onMouseDown={e => { setIsDragging(true); setStartPos({ x: e.clientX, y: e.clientY }); }}
-      onMouseMove={e => {
-        if (!isDragging) return;
-        const dx = e.clientX - startPos.x;
-        const dy = e.clientY - startPos.y;
-        setRotateY(ry => ry + dx * 0.4);
-        setRotateX(rx => Math.max(-40, Math.min(40, rx - dy * 0.4)));
-        setStartPos({ x: e.clientX, y: e.clientY });
-      }}
-      onMouseUp={() => setIsDragging(false)}
+      className="relative mx-auto"
+      style={{ width: '100%', maxWidth: 700, height: 420 }}
     >
-      {/* Central sphere */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      {/* Center sphere */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
         <motion.div
           className="w-28 h-28 rounded-full flex items-center justify-center"
           style={{
@@ -156,8 +139,8 @@ function CubeVisual({ categories, scrollTo }) {
             border: '2px solid rgba(0,212,255,0.4)',
             boxShadow: '0 0 60px rgba(0,212,255,0.3), 0 0 120px rgba(124,58,237,0.1)',
           }}
-          animate={{ rotate: autoRotate ? [0, 360] : rotateY }}
-          transition={autoRotate ? { duration: 20, repeat: Infinity, ease: 'linear' } : {}}
+          animate={{ rotate: [0, 360] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
         >
           <span
             className="text-xl font-black"
@@ -173,94 +156,75 @@ function CubeVisual({ categories, scrollTo }) {
         </motion.div>
       </div>
 
-      {/* Cards around the sphere */}
-      {categories.map((cat, i) => {
-        const positions = [
-          { x: -180, y: -100 },  // Projects - top left
-          { x: 80,  y: -100 },   // Experience - top right
-          { x: -180, y: 80 },    // Skills - bottom left
-          { x: 80,  y: 80 },     // Certs - bottom right
-        ];
-        const pos = positions[i];
-        const Icon = cat.icon;
+      {/* Connection lines SVG */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        aria-hidden="true"
+      >
+        {categories.map((cat, i) => {
+          const px = i < 2 ? (i === 0 ? '18%' : '82%') : (i === 2 ? '18%' : '82%');
+          const py = i < 2 ? '28%' : '72%';
+          return (
+            <line
+              key={cat.id}
+              x1="50%" y1="50%"
+              x2={px} y2={py}
+              stroke={cat.color}
+              strokeWidth="1"
+              strokeOpacity={hovered === cat.id ? 0.5 : 0.15}
+              strokeDasharray="6 4"
+            />
+          );
+        })}
+      </svg>
 
+      {/* Category cards */}
+      {categories.map((cat, i) => {
+        const Icon = cat.icon;
+        const pos = positions[i];
         return (
           <motion.button
             key={cat.id}
             onClick={() => scrollTo(cat.id)}
-            className="absolute group focus-visible:outline-none"
+            className="absolute focus-visible:outline-none focus-visible:ring-2"
             style={{
-              left: '50%',
-              top: '50%',
-              transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))`,
-              width: 130,
+              ...pos,
+              width: 150,
             }}
-            whileHover={{ scale: 1.08, zIndex: 10 }}
-            initial={{ opacity: 0, scale: 0.8 }}
+            onMouseEnter={() => setHovered(cat.id)}
+            onMouseLeave={() => setHovered(null)}
+            whileHover={{ scale: 1.06 }}
+            initial={{ opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.15, duration: 0.5, type: 'spring' }}
+            transition={{ delay: i * 0.12, duration: 0.5, type: 'spring' }}
             aria-label={`Go to ${cat.label} section`}
           >
             <div
               className="rounded-2xl p-4 text-center transition-all duration-300"
               style={{
-                background: `linear-gradient(135deg, ${cat.color}12, rgba(2,8,24,0.8))`,
-                border: `1px solid ${cat.color}35`,
+                background: `linear-gradient(135deg, ${cat.color}12, rgba(2,8,24,0.85))`,
+                border: `1px solid ${hovered === cat.id ? cat.color + '70' : cat.color + '35'}`,
                 backdropFilter: 'blur(12px)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.parentElement.style.zIndex = '20';
-                e.currentTarget.style.boxShadow = `0 0 30px ${cat.glow}`;
-                e.currentTarget.style.borderColor = `${cat.color}70`;
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.borderColor = `${cat.color}35`;
+                boxShadow: hovered === cat.id ? `0 0 30px ${cat.glow}` : 'none',
               }}
             >
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3 transition-transform duration-300 group-hover:scale-110"
-                style={{ background: `${cat.color}18`, border: `1px solid ${cat.color}40` }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3 transition-transform duration-300"
+                style={{
+                  background: `${cat.color}18`,
+                  border: `1px solid ${cat.color}40`,
+                  transform: hovered === cat.id ? 'scale(1.1)' : 'scale(1)',
+                }}
               >
                 <Icon size={20} style={{ color: cat.color }} aria-hidden="true" />
               </div>
               <div className="text-sm font-bold text-white">{cat.label}</div>
               <div className="text-xs text-slate-400 mt-0.5">{cat.desc}</div>
             </div>
-            {/* Connector line to center */}
-            <svg
-              className="absolute top-1/2 left-1/2 pointer-events-none"
-              style={{
-                width: Math.abs(pos.x),
-                height: 2,
-                position: 'absolute',
-                top: '50%',
-                left: pos.x < 0 ? '100%' : 'auto',
-                right: pos.x > 0 ? '100%' : 'auto',
-                zIndex: -1,
-              }}
-              aria-hidden="true"
-            >
-              <line
-                x1="0"
-                y1="1"
-                x2={Math.abs(pos.x)}
-                y2="1"
-                stroke={cat.color}
-                strokeWidth="1"
-                strokeOpacity="0.2"
-                strokeDasharray="4 4"
-              />
-            </svg>
           </motion.button>
         );
       })}
-
-      {/* Drag hint */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-slate-600 font-mono">
-        Click a section to navigate
-      </div>
     </div>
   );
 }

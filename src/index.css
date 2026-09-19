@@ -221,3 +221,147 @@
 .section-padding {
   @apply py-16 md:py-24 px-4 md:px-8 lg:px-16;
 }
+
+/* SVG ring spin */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ══════════════════════════════════════
+   PREMIUM EFFECTS
+   ══════════════════════════════════════ */
+
+/* Holographic card shimmer — add class "holographic" to any card */
+.holographic {
+  position: relative;
+  overflow: hidden;
+}
+.holographic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(0, 212, 255, 0.06) 35%,
+    rgba(124, 58, 237, 0.08) 50%,
+    rgba(236, 72, 153, 0.06) 65%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: holoshimmer 3s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes holoshimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* Neon text flicker — add class "neon-flicker" */
+.neon-flicker {
+  animation: flicker 6s infinite;
+}
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 6px rgba(0,212,255,0.8),
+      0 0 20px rgba(0,212,255,0.6),
+      0 0 40px rgba(0,212,255,0.4);
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+    opacity: 0.85;
+  }
+}
+
+/* Pulse ring — add class "pulse-ring" to a rounded element */
+.pulse-ring {
+  position: relative;
+}
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid rgba(0, 212, 255, 0.5);
+  animation: pulseRing 2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Scan line sweep — add class "scanline" to a section */
+.scanline::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.4), transparent);
+  animation: scanSweep 4s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes scanSweep {
+  0%   { top: 0%;   opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Gradient border glow — add class "glow-border" */
+.glow-border {
+  position: relative;
+  border-radius: inherit;
+}
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #00d4ff, #7c3aed, #ec4899, #00d4ff);
+  background-size: 300% 300%;
+  animation: gradientBorder 4s linear infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.glow-border:hover::before {
+  opacity: 1;
+}
+@keyframes gradientBorder {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Typewriter cursor blink */
+.typewriter-cursor::after {
+  content: '|';
+  margin-left: 2px;
+  color: #00d4ff;
+  animation: cursorBlink 1s step-end infinite;
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Number counter glow */
+.counter-glow {
+  filter: drop-shadow(0 0 8px currentColor);
+  transition: filter 0.3s;
+}
+.counter-glow:hover {
+  filter: drop-shadow(0 0 20px currentColor);
+}
+
+/* Hide cursor on desktop when CursorGlow is active */
+@media (pointer: fine) {
+  * { cursor: none !important; }
+  a, button, [role="button"] { cursor: none !important; }
+}

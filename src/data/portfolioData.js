@@ -4,11 +4,14 @@
 // ============================================================
 
 export const personal = {
-  name: "Mohana Srija Puram",
-  initials: "MSP",
-  title: "Computer Science Engineering Student | Aspiring Software Developer",
+  name: "Mohana P",
+  fullName: "Mohana Srija Puram",
+  avatar: "/assets/images/my-photo.jpeg",
+  initials: "MP",
+  title: "Computer Science & Engineering Student",
+  subtitle: "AI & Full-Stack Developer | Agentic AI Enthusiast",
   tagline: "Turning Ideas into Real-World Solutions",
-  bio: "Motivated third-year Computer Science Engineering student with a strong foundation in programming, data structures, and full-stack development, and a growing focus on machine learning and AI-driven applications. Seeking opportunities to apply technical and problem-solving skills to real-world projects, deepen ML expertise, and gain industry experience.",
+  bio: "Motivated Computer Science & Engineering student with a strong foundation in full-stack development and an active focus on Agentic AI and LLM integration. Experienced in building responsive web applications, autonomous AI agents, and real-world software solutions.",
   location: "Tenali, Andhra Pradesh, India",
   email: "purammohanasrija@gmail.com",
   phone: "+91-8074177416",

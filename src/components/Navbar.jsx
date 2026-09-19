@@ -78,10 +78,10 @@ export default function Navbar({ onRecruiterMode }) {
                   color: '#00d4ff',
                 }}
               >
-                MSP
+                MP
               </div>
               <span className="hidden sm:block text-sm font-semibold text-white/80 group-hover:text-white transition-colors">
-                Mohana Srija
+                Mohana P
               </span>
             </button>
 

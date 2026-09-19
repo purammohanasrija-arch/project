@@ -116,9 +116,9 @@ export default function ResumeSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">Mohana Srija Puram</h3>
+              <h3 className="text-xl font-bold text-white mb-2">{personal.name}</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Computer Science Engineering Student with expertise in full-stack development, AI/ML, and modern web technologies.
+                Computer Science &amp; Engineering Student with expertise in full-stack development, Agentic AI, and modern web technologies.
               </p>
             </div>
 
@@ -145,7 +145,7 @@ export default function ResumeSection() {
             <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href={personal.resume}
-                download="Mohana-Srija-Puram-Resume.pdf"
+                download="Mohana-P-Resume.pdf"
                 className="btn-primary flex items-center justify-center gap-2 text-sm"
                 aria-label="Download resume as PDF"
               >
